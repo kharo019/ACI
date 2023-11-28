@@ -1,0 +1,231 @@
+{% extends "baseTemplate.html" %}
+
+{% block title %} Compiler {% endblock %}
+
+{% block pageContent %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		{{ codemirror.include_codemirror() }}
+		<title>Aggie Compiler - Editor</title>
+
+		<!-- Bootstrap-->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" >
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" ></script>
+
+		<!-- Compiler main files-->
+		<script src = "codemirror5-master/src/compiler.js"> </script>
+		<link href = "codemirror5-master/lib/compiler.css"rel="stylesheet"/>
+
+		<!-- Javascript -->
+		<script type = "text/javascript" src = "/static/js/j-query.min.js"> </script>
+		<script type = "text/javascript" src = "static/js/default.js"> </script>
+		
+		<!-- Languages -->
+		<script src = "static/languages/python.js"> </script>
+		<script src = "static/languages/clike.js"> </script>
+
+		<!-- Addons -->
+		<script src = "addon/css-hint.js"> </script>
+		<script src = "addon/show-hint.js"> </script>
+		<script rel = "stylesheet" href = "addon/show-hint.css"></script>
+
+		<script src = "codemirror5-master//addon/closetag.js"> </script>
+		<script src = "static/addon/closeBracket.js"> </script>
+		<link href = "static/theme/dracula.css"rel="stylesheet"/>
+		<link href = "static/theme/monokai.css"rel="stylesheet"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">		
+		
+		<style>
+			*{
+				margin: 0px;
+				padding: 0px;
+				box-sizing: border-box;
+			}
+		</style>
+	
+	</head>
+
+	<body>
+		<div class = "container bg-light rounded">
+			<div class = "row m-3">
+				<div class = "col-auto">
+						 <!-- div class ="col-12 w-25"-->
+					<label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+						<select class="form-select" id="inlineFormSelectPref">
+							<option selected>Choose Language...</option>
+							<option value="Java">Java</option>
+							<option value="C">C</option>
+							<option value="C++">C++</option>
+							<option value="Python">Python</option>
+						</select>
+					</div>
+					<div class="col-auto"> <!-- div class = "col-auto" -->
+						<label class="visually-hidden" for="autoSizingSelect"> Preference </label>
+							<select class = "form-select" id = "autoSizingSelect">
+								<option Selected> Choose Theme...</option>
+								<option value = "1"> 3024-day</option>
+								<option value = "2"> 3024-night</option>
+								<option value = "3"> abbot </option>
+							</select>
+					</div>
+
+					<div class = "row">
+						<form action = "/compiler" method = "POST">
+							<textarea name = "data" id = "data"> </textarea> <!-- id = "editor" before-->
+							<input type = 'submit' value = "Compile"> 
+							<!-- <button type = "submit" class = "row btn btn-info"> Run </button> -->
+						</form>
+
+						<div> 
+						{{ data }}
+						
+					</div>
+
+				</div>
+			<!-- test if this works either inside of body or outside of the body html -->
+			<script type = "text/javascript"> 
+				var editor = CodeMirror.fromTextArea(
+					document.getElementById('data'),
+					{
+						mode: "python",
+						theme: "monokai",
+						lineNumbers: true,
+						autoCloseTags: true,
+						autoCloseBrackets: true,
+						tabSize: 4
+					});
+
+				var width = window.innerWidth
+
+				var input = document.getElementById("Input")
+				var output = document.getElementById("Output")
+
+
+
+				editor.setSize(0.5 * width, "500")
+
+
+				var option = document.getElementById("inlineFormSelectPref")
+				option.addEventListener("change", function(){
+				if(option.value == "Java"){
+				editor.setOption("mode", "text/x-java")
+				}
+				else if(option.value == "Python"){
+				editor.setOption("mode", "text/x-python")
+				}
+				else {
+				editor.setOption("mode", "text/x-c++src")
+				}
+				})
+
+			</script>
+
+						
+
+				
+						
+
+				</div>
+
+				<div class = "col d-flex flex-column rounded bg-dark px-4 positon-absolute top-50 end-50">
+					<div class = "h-25">
+						<label for = "Input" class = "text-light mt-4 mb-2 "> Input </label>
+						<textarea type = "text" class = "form-control h-75 " aria-label = "last name"> </textarea>
+					</div>
+					<div class = "h-25">
+						<label for = "Output" class = "text-light mb-2"> Output </label>
+						<textarea type = "text" class = "form-control h-75" aria-label = "last name"> </textarea>
+					</div>
+				</div>
+
+
+				
+
+				
+
+							<!-- Button to rub the compiler 
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">  div class="col- auto"> 
+						<button type="button" class="btn btn-success">Debug Button 1</button>
+						<button type="button"  class="btn btn-info"><i class="bi bi-play-fill"></i></button>
+					</div> -->
+
+		
+</body>	
+
+
+
+
+</html>
+			
+{% endblock %}
+
+				<!--
+				<form method = "POST">
+					{{ form.csrf_token }}
+					{{ form.source_code }}
+
+					<textarea type = "text" name = "editor" class = "form-control" id = "editor"> </textarea>
+					<button type = "submit"> Run </button>
+				</form>
+			-->
+
+				<!-- This is the compiler textarea
+				<textarea type = "text" class = "form-control" id = "editor"> </textarea>
+				-->
+
+			<!--
+			<div class = "col d-flex flex-column rounded bg-dark px-4">
+				<div class = "h-50">
+					<label for = "Input" class = "text-light mt-4 mb-2"> Input </label>
+					<textarea type = "text" class = "form-control h-75" aria-label = "last name"> </textarea>
+				</div>
+				<div class = "h-50">
+					<label for = "Output" class = "text-light mb-2"> Output </label>
+					<textarea type = "text" class = "form-control h-75" aria-label = "last name"> </textarea>
+				</div>
+			</div>
+		-->
+
+			
+	
+
+		<!---
+		<script>
+			var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+				mode: "text/x-c++src", <!-- "text/x-java" "text/x-csrc" "text/x-python"
+				theme: "dracula",
+				lineNumbers: true,
+				autoCloseTags: true,
+				autoCloseBrackets: true,
+				tabSize: 4
+
+			});
+			var width = window.innerWidth
+
+			var input = document.getElementById("Input")
+			var output = document.getElementById("Output")
+
+			editor.setSize(0.7 * width, "500")
+
+			var option = document.getElementById("inlineFormSelectPref")
+			option.addEventListener("change", function(){
+				if(option.value == "Java"){
+					editor.setOption("mode", "text/x-java")
+				}
+				else if(option.value == "Python"){
+					editor.setOption("mode", "text/x-python")
+				}
+				else {
+					editor.setOption("mode", "text/x-c++src")
+				}
+			})
+
+			
+		</script>  - ->
+		
+		</html>
+
+
+

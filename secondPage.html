@@ -1,0 +1,72 @@
+
+
+<!DOCTYPE html> 
+<html>
+
+<head>
+	<title>
+		Second Page Cat
+	</title>
+	<script src="ACI/WebPd-main/webpd.min.js"></script>
+	<script src="ACI/catMusic.js"></script>
+	<script src="https://www.youtube.com/iframe_api"></script>
+
+
+
+	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+	<link rel = "stylesheet" href = "style.css">
+
+	<script> 
+
+		function playVideo() {
+			var player = new YT.Player('player', {
+			  videoId: 'VIDEO_ID', // Replace with the actual YouTube video ID
+			  playerVars: {
+				autoplay: 1, // Auto-play the video
+			  },
+			});
+		  }
+		 document.getElementById('playButton').addEventListener('click', playVideo);
+
+
+
+		WebPd.exportPatch('ACI/catMusic.pd', function(jsCode) {
+			console.log(jsCode);
+		  });		  
+
+		  var pdPatchCode = catMusic.js;
+
+		  var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+		  var pd = new WebPd.PdObject(audioContext);
+		  
+		  pd.loadPatch(pdPatchCode, function() {
+			
+		  });
+	</script>
+
+	<body>
+
+		<div class = "hero">
+			<div> 
+			<title> beta </title>
+			<h1> Welcome to this interactive web application for your cat </h1>
+			<p>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/CzKlTdDQs8Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			</p>
+			<a href = "index.html">
+				<button type = "button" class="btn btn-info" onclick = "sendData()"> Go to Home </button>
+				<button type = "button" class="btn btn-info" onclick = "sendData()"> Start </button>
+			</a>
+			</div>
+
+		</div>
+
+		
+
+	</body>
+	
+</head>
+
+
+
+</html>
